@@ -1,6 +1,7 @@
 ﻿using Blog.DataAccess;
 using Blog.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -69,15 +70,17 @@ namespace Blog.Api.Controllers
                     Password = "lozinka123",
                     FirstName = "Tika",
                     LastName = "Tikic",
-                    RoleId = roles.ElementAt(0).Id,
                     Role = roles.ElementAt(0)
                 }
             };
 
             var images = new List<Image>
             {
-                new Image{ Src = @"wwwroot\images\first.jpg", Alt = "Sea Landscape"},
-                new Image{ Src = @"wwwroot\images\second.jpg", Alt = "Mountain Landscape"},
+                new Image{ Src = @"wwwroot\images\first.jpg", Alt = "first"},
+                new Image{ Src = @"wwwroot\images\second.jpg", Alt = "second"},
+                new Image{ Src = @"wwwroot\images\third.jpg", Alt = "third"},
+                new Image{ Src = @"wwwroot\images\fourth.jpg", Alt = "fourth"},
+                new Image{ Src = @"wwwroot\images\fifth.jpg", Alt = "fifth"},
             };
 
             var categories = new List<Category>
@@ -90,14 +93,60 @@ namespace Blog.Api.Controllers
 
             var votetypes = new List<VoteType>
             {
-                new VoteType{ Type = "Upvote"},
-                new VoteType{ Type = "Downvote"}
+                new VoteType{ Type = "Attack"},
+                new VoteType{ Type = "Defend"}
+            };
+
+            var statuses = new List<Status>
+            {
+                new Status{ Name = "Alive"},
+                new Status{ Name = "Dead"},
+                new Status{ Name = "Invisible"},
+                new Status{ Name = "Popular"},
+                new Status{ Name = "Amazing"}
             };
 
             var usecases = new List<UseCase>
             {
-                new UseCase{ Name = "New BlogPost", Description = "Create a new blogpost"},
-                new UseCase{ Name = "Delete user", Description = "Delete an existing user"}
+                new UseCase{ Name = "Register", Description = "Create a new blogpost"},
+                // iznad je UseCase iskljuciv za Anon-a
+                new UseCase{ Name = "Search Blog Posts", Description = "Delete an existing user"},
+                new UseCase{ Name = "View Blog Post", Description = "Delete an existing user"},
+                new UseCase{ Name = "Show Comments", Description = "Delete an existing user"},
+                // iznad su useCase-ovi za Anon korisnika
+                new UseCase{ Name = "View user", Description = "Delete an existing user"},
+                new UseCase{ Name = "Create Blog Post", Description = "Delete an existing user"},
+                new UseCase{ Name = "Add images to Blog Post", Description = "Delete an existing user"},
+                new UseCase{ Name = "Patch Blog Post", Description = "Delete an existing user"},
+                new UseCase{ Name = "Create Comment", Description = "Delete an existing user"},
+                new UseCase{ Name = "Vote", Description = "Delete an existing user"},
+                new UseCase{ Name = "Update Blog Post Categories", Description = "Delete an existing user"},
+                new UseCase{ Name = "Update User Profile", Description = "Delete an existing user"},
+                new UseCase{ Name = "Delete Image From Blog Post", Description = "Delete an existing user"},
+                new UseCase{ Name = "Delete comment", Description = "Delete an existing user"},
+                new UseCase{ Name = "Unvote", Description = "Delete an existing user"},
+                new UseCase{ Name = "Delete Blog Post", Description = "Delete an existing user"},
+                new UseCase{ Name = "Search Blog Post Images", Description = "Delete an existing user"},
+                new UseCase{ Name = "Search User Votes", Description = "Delete an existing user"},
+                // iznad su UseCase-ovi za Regularnog Korisnika
+                new UseCase{ Name = "Search Category", Description = "Delete an existing user"},
+                new UseCase{ Name = "Create Category", Description = "Delete an existing user"},
+                new UseCase{ Name = "Search Users", Description = "Delete an existing user"},
+                new UseCase{ Name = "Delete Category", Description = "Delete an existing user"},
+                new UseCase{ Name = "Search Roles", Description = "Delete an existing user"},
+                new UseCase{ Name = "Change Role", Description = "Delete an existing user"},
+                new UseCase{ Name = "Update UserUseCases", Description = "Delete an existing user"},
+                new UseCase{ Name = "Delete user", Description = "Delete an existing user"},
+                new UseCase{ Name = "Search Logs", Description = "Delete an existing user"},
+                new UseCase{ Name = "Search UseCases", Description = "Delete an existing user"},
+                new UseCase{ Name = "Show Category", Description = "Delete an existing user"},
+                new UseCase{ Name = "Search UserUseCases", Description = "Delete an existing user"},
+                new UseCase{ Name = "Add UserUseCase", Description = "Delete an existing user"},
+                new UseCase{ Name = "Remove UserUseCase", Description = "Delete an existing user"}
+                // iznad su UseCase-ovi za Admin Korisnika
+                // 32 Use Case-ova i dodati jos ako je neophodno
+                // za korisnike napraviti posle niz i svakom korisniku sa for petljom napraviti po usecase i gurnuti u listu
+                // 
             };
 
             var userusecases = new List<UserUseCase>
@@ -107,7 +156,7 @@ namespace Blog.Api.Controllers
                 new UserUseCase { UseCase = usecases.ElementAt(0), User = users.ElementAt(2)},
                 new UserUseCase { UseCase = usecases.ElementAt(1), User = users.ElementAt(2)},
             };
-
+            var regularUserUseCasesArray = new Array[ 0, 2];
             var auditlogs = new List<AuditLog>
             {
                 new AuditLog { IsAuthorized = true , UseCaseName = "New BlogPost", UserId = 1, Username = "pera", Data="User pera created a new blogpost [test]" },
@@ -149,6 +198,7 @@ namespace Blog.Api.Controllers
             };
 
             context.Roles.AddRange(roles);
+            context.Status.AddRange(statuses);
             context.Users.AddRange(users);
             context.Images.AddRange(images);
             context.Categories.AddRange(categories);

@@ -28,7 +28,7 @@ namespace Blog.Implementation.UseCases.Commands
 
         public string Name => "Create Vote";
 
-        public string Description => "Vote down or up on a comment or a blog post";
+        public string Description => "Vote down or up on a comment on a blog post";
 
         public void Execute(VoteDto dto)
         {

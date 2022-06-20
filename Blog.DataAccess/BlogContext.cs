@@ -8,10 +8,11 @@ namespace Blog.DataAccess
 {
     public class BlogContext : DbContext
     {
-        public BlogContext()
-        {
+        // otkomentarisati pri migracijama
+        //public BlogContext()
+        //{
 
-        }
+        //}
         public BlogContext(DbContextOptions options = null) : base(options)
         {
 
@@ -21,11 +22,12 @@ namespace Blog.DataAccess
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
             base.OnModelCreating(modelBuilder);
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=blograd;Integrated Security=True");
-            base.OnConfiguring(optionsBuilder);
-        }
+        // otkomentarisati pri migracijama
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=blograd;Integrated Security=True");
+        //    base.OnConfiguring(optionsBuilder);
+        //}
         public DbSet<Role> Roles { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<User> Users { get; set; }
