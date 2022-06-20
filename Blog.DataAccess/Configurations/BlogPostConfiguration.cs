@@ -18,6 +18,8 @@ namespace Blog.DataAccess.Configurations
             builder.Property(x => x.CoverImage).IsRequired();
             builder.Property(x => x.Title).IsRequired().HasMaxLength(50);
             builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETDATE()");
+            builder.Property(x => x.Health).HasDefaultValue(100);
+            builder.Property(x => x.StatusId).HasDefaultValue(1);
             builder.Property(x => x.UpdatedAt).IsRequired(false);
             builder.HasIndex(x => x.Title);
 

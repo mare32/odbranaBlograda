@@ -68,6 +68,11 @@ namespace Blog.Implementation.UseCases.Commands
                     CommentId = commId,
                     TypeId = dto.VoteType
                 };
+                if(postId != null)
+                {
+                    var blogPost = Context.BlogPosts.Find(postId.Value);
+                    // DO OVDE STIGOH ODUZETI HELTE
+                }
             }
             else
             {
