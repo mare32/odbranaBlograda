@@ -71,7 +71,21 @@ namespace Blog.Implementation.UseCases.Commands
                 if(postId != null)
                 {
                     var blogPost = Context.BlogPosts.Find(postId.Value);
-                    // DO OVDE STIGOH ODUZETI HELTE
+                    if(vote.TypeId == 1)
+                    {
+                        blogPost.Health += 10;
+                        if (blogPost.Health > 100)
+                            blogPost.Health = 100;
+                    }
+                    else
+                    {
+                        blogPost.Health -= 10;
+                        if (blogPost.Health < 0)
+                        {
+                            blogPost.Health = 0;
+                            blogPost.StatusId = 3;
+                        }
+                    }
                 }
             }
             else
@@ -84,6 +98,25 @@ namespace Blog.Implementation.UseCases.Commands
                     CommentId = commId,
                     TypeId = dto.VoteType
                 };
+                if (postId != null)
+                {
+                    var blogPost = Context.BlogPosts.Find(postId.Value);
+                    if (vote.TypeId == 1)
+                    {
+                        blogPost.Health += 10;
+                        if (blogPost.Health > 100)
+                            blogPost.Health = 100;
+                    }
+                    else
+                    {
+                        blogPost.Health -= 10;
+                        if (blogPost.Health < 0)
+                        {
+                            blogPost.Health = 0;
+                            blogPost.StatusId = 3;
+                        }
+                    }
+                }
             }
 
             Context.Votes.Add(vote);

@@ -32,6 +32,27 @@ namespace Blog.Implementation.UseCases.Commands
             {
                 throw new EntityNotFoundException(nameof(Vote),id);
             }
+            int? postId = vote.PostId;
+            if (postId != null)
+            {
+                var blogPost = Context.BlogPosts.Find(postId.Value);
+                if (vote.TypeId == 1)
+                {
+                    blogPost.Health -= 10;
+                    if (blogPost.Health < 0)
+                        blogPost.Health = 1;
+                    // ovde negde dodati blogPost.Votes.Count() ako je preko odredjenog broja postaje popularan
+                    // a ako je u plusu preko odredjenog broja postaje amazing
+                }
+                else
+                {
+                    blogPost.Health += 10;
+                    if (blogPost.Health > 100)
+                    {
+                        blogPost.Health = 100;
+                    }
+                }
+            }
             Context.Votes.Remove(vote);
             Context.SaveChanges();
         }
