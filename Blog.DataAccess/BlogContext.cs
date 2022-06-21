@@ -9,10 +9,10 @@ namespace Blog.DataAccess
     public class BlogContext : DbContext
     {
         // otkomentarisati pri migracijama
-        //public BlogContext()
-        //{
+        public BlogContext()
+        {
 
-        //}
+        }
         public BlogContext(DbContextOptions options = null) : base(options)
         {
 
@@ -23,11 +23,14 @@ namespace Blog.DataAccess
             base.OnModelCreating(modelBuilder);
         }
         // otkomentarisati pri migracijama
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=blograd;Integrated Security=True");
-        //    base.OnConfiguring(optionsBuilder);
-        //}
+
+        // BITNO - ukoliko trazi neku referencu za api assembly, restartovati VisualStudio i popravice se
+        // Pri migracijjama staviti da se pali DataAccess Sloj, mislim da je bitno
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=blog;Integrated Security=True");
+            base.OnConfiguring(optionsBuilder);
+        }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<User> Users { get; set; }

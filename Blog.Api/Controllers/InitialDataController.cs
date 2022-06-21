@@ -15,7 +15,7 @@ namespace Blog.Api.Controllers
     {
 
         /// <summary>
-        /// Posted the initial data when I started this project(Not for use currently)
+        /// Initialize fake data, optionaly delete all databeforehand(if time lets me)
         /// </summary>
         /// <returns></returns>
         /// <remarks>
@@ -89,7 +89,8 @@ namespace Blog.Api.Controllers
                 new Category { Name = "Travel"},
                 new Category { Name = "Food"},
                 new Category { Name = "Health"},
-                new Category { Name = "Politics"}
+                new Category { Name = "Politics"},
+                new Category { Name = "Drama"},
             };
 
             var votetypes = new List<VoteType>
@@ -195,32 +196,55 @@ namespace Blog.Api.Controllers
                     BlogPostContent = "Climbing up theres was a real challenge but somehow we actualy made it in one piece, gettin down was even harder.",
                     Author = users.First(),
                     Status = statuses.First(),
-                }
+                },
+                new BlogPost
+                {
+                    Title = "Relaxing Honolulu",
+                    CoverImage = 2,
+                    BlogPostContent = "Climbing up theres was a real challenge but somehow we actualy made it in one piece, gettin down was even harder.",
+                    Author = users.First(),
+                    Status = statuses.First(),
+                },
+                new BlogPost
+                {
+                    Title = "Amber Heard was RIGHT!",
+                    CoverImage = 1,
+                    BlogPostContent = "Too all Ambers haters, you are wrong, Johnny Depp made so many mistakes, she definitely deserved to win.",
+                    Author = users.ElementAt(1),
+                    Status = statuses.First(),
+                },
             };
 
             var blogpostcategories = new List<BlogPostCategory>
             {
                 new BlogPostCategory{ BlogPost = blogposts.First(), Category = categories.First() },
                 new BlogPostCategory{ BlogPost = blogposts.First(), Category = categories.ElementAt(2) },
+                new BlogPostCategory{ BlogPost = blogposts.ElementAt(1), Category = categories.ElementAt(0) },
+                new BlogPostCategory{ BlogPost = blogposts.ElementAt(1), Category = categories.ElementAt(1) },
+                new BlogPostCategory{ BlogPost = blogposts.ElementAt(2), Category = categories.ElementAt(4) },
             };
 
             var blogpostimages = new List<BlogPostImage>
             {
                 new BlogPostImage {BlogPost = blogposts.First(), Image = images.First()},
                 new BlogPostImage {BlogPost = blogposts.First(), Image = images.ElementAt(1)},
+                new BlogPostImage {BlogPost = blogposts.ElementAt(1), Image = images.ElementAt(2)},
+                new BlogPostImage {BlogPost = blogposts.ElementAt(1), Image = images.ElementAt(3)},
+                new BlogPostImage {BlogPost = blogposts.ElementAt(2), Image = images.ElementAt(4)},
             };
             var comments = new List<Comment>
             {
-                new Comment { BlogPost = blogposts.First(),CommentText = "Woah that is so crazy!", User = users.ElementAt(1)}
+                new Comment { BlogPost = blogposts.First(),CommentText = "Woah that is so crazy!", User = users.ElementAt(1)},
+                new Comment { BlogPost = blogposts.ElementAt(1),CommentText = "I wish I was there right now...", User = users.ElementAt(2)}
             };
             var subcomment = new Comment { BlogPost = blogposts.First(), CommentText = "Thank you, we barely survived haha", User = users.ElementAt(0), ParentComment = comments.First() };
             comments.Add(subcomment);
 
-            var votes = new List<Vote>
-            {
-                new Vote{ VoteType = votetypes.First(), User = users.ElementAt(1),BlogPost = blogposts.First()},
-                new Vote{ VoteType = votetypes.ElementAt(1), User = users.ElementAt(0),Comment = comments.ElementAt(0)}
-            };
+            //var votes = new List<Vote>
+            //{
+            //    new Vote{ VoteType = votetypes.First(), User = users.ElementAt(1),BlogPost = blogposts.First()},
+            //    new Vote{ VoteType = votetypes.ElementAt(1), User = users.ElementAt(0),Comment = comments.ElementAt(0)}
+            //};
 
             context.Roles.AddRange(roles);
             context.Status.AddRange(statuses);
@@ -237,7 +261,7 @@ namespace Blog.Api.Controllers
             context.BlogPostCategories.AddRange(blogpostcategories);
             context.BlogPostImages.AddRange(blogpostimages);
             context.Comments.AddRange(comments);
-            context.Votes.AddRange(votes);
+            //context.Votes.AddRange(votes);
 
             context.SaveChanges();
             return StatusCode(201);
