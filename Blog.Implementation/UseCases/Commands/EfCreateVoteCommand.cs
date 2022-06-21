@@ -71,7 +71,7 @@ namespace Blog.Implementation.UseCases.Commands
                 if(postId != null)
                 {
                     var blogPost = Context.BlogPosts.Find(postId.Value);
-                    if(vote.TypeId == 1)
+                    if(vote.TypeId == 2)
                     {
                         blogPost.Health += 10;
                         if (blogPost.Health > 100)
@@ -101,7 +101,8 @@ namespace Blog.Implementation.UseCases.Commands
                 if (postId != null)
                 {
                     var blogPost = Context.BlogPosts.Find(postId.Value);
-                    if (vote.TypeId == 1)
+                    // napraviti reusable funkciju za kod ispod
+                    if (vote.TypeId == 2)
                     {
                         blogPost.Health += 10;
                         if (blogPost.Health > 100)
