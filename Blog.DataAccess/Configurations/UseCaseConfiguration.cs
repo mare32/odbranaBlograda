@@ -15,7 +15,7 @@ namespace Blog.DataAccess.Configurations
         {
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Description).IsRequired(false).HasMaxLength(50);
-
+            builder.Property(x => x.Id).ValueGeneratedNever();
             // odlucio sam da ne stavim Name da bude unique u slucaju gde je isto ime al drugaciji opis
 
             builder.HasMany(x => x.UserUseCases).WithOne(x => x.UseCase).HasForeignKey(x => x.CaseId).OnDelete(DeleteBehavior.Cascade);
