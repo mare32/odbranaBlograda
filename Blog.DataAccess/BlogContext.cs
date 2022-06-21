@@ -22,10 +22,10 @@ namespace Blog.DataAccess
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
             base.OnModelCreating(modelBuilder);
         }
-        // otkomentarisati pri migracijama
-
         // BITNO - ukoliko trazi neku referencu za api assembly, restartovati VisualStudio i popravice se
         // Pri migracijjama staviti da se pali DataAccess Sloj, mislim da je bitno
+
+        // otkomentarisati pri migracijama
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=blog;Integrated Security=True");
