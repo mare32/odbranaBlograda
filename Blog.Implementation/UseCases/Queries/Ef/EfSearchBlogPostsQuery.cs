@@ -68,6 +68,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 }).ToList(),
                 Status = x.Status.Name,
                 Health = x.Health,
+                Shield = x.Shield,
                 CreatedAt = x.CreatedAt,
                 TotalVotes = x.Votes.Count,
                 UpVotes = x.Votes.Where(y => y.TypeId == 1).Count(),

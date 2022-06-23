@@ -21,6 +21,7 @@ namespace Blog.Application.UseCases.DTO
         public int TotalVotes { get; set; }
         public string Status { get; set; }
         public int Health { get; set; }
+        public int Shield { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

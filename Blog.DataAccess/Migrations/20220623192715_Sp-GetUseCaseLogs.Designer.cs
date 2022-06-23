@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.DataAccess.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20220621173956_sp-addNewLogRecord")]
-    partial class spaddNewLogRecord
+    [Migration("20220623192715_Sp-GetUseCaseLogs")]
+    partial class SpGetUseCaseLogs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,6 +83,11 @@ namespace Blog.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(100);
+
+                    b.Property<int>("Shield")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()

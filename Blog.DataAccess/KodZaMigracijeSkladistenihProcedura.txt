@@ -1,0 +1,33 @@
+﻿           
+           
+           add-migration Sp-AddNewLogRecord
+           var sp = @"create procedure [dbo].[AddNewLogRecord]
+                    @useCaseName nvarchar(450),
+                    @username nvarchar(max),
+                    @userId int,
+                    @executedAt datetime2(7),
+                    @data nvarchar(max),
+                    @isAuthorized bit
+                    as
+                    begin
+                    insert into AuditLogs(UseCaseName,Username,UserId,ExecutedAt,Data,IsAuthorized)
+                    values(@useCaseName,@username,@userId,@executedAt,@data,@isAuthorized) END";
+
+           migrationBuilder.Sql(sp);
+
+           add-migration Sp-GetUseCaseLogs
+           var sp = @"create procedure [dbo].[GetUseCaseLogs]
+                    @dateFrom datetime,
+                    @dateTo datetime,
+                    @useCaseName nvarchar(30),
+                    @username nvarchar(max)
+                    as
+                    begin
+                    select UseCaseName,Username,UserId,ExecutedAt,IsAuthorized,Data 
+                    from AuditLogs
+                    where ExecutedAt between @dateFrom and @dateTo AND
+	                        (@useCaseName is null OR UseCaseName like '%'+@useCaseName+'%') AND
+	                        (@username is null OR Username like '%'+@username+'%')
+                    end";
+
+           migrationBuilder.Sql(sp);

@@ -26,10 +26,10 @@ namespace Blog.DataAccess
         // Pri migracijjama staviti da se pali DataAccess Sloj, mislim da je bitno
 
         // otkomentarisati pri migracijama
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
         //{
-        //    optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=blog;Integrated Security=True");
-        //    base.OnConfiguring(optionsBuilder);
+        //    optionsbuilder.UseSqlServer(@"Data Source=.\sqlexpress;Initial Catalog=blograd;Integrated Security=true");
+        //    base.OnConfiguring(optionsbuilder);
         //}
         public DbSet<Role> Roles { get; set; }
         public DbSet<Status> Status { get; set; }

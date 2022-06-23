@@ -2,11 +2,11 @@
 
 namespace Blog.DataAccess.Migrations
 {
-    public partial class spGetUseCaseLogs : Migration
+    public partial class SpGetUseCaseLogs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-           var sp = @"create procedure [dbo].[GetUseCaseLogs]
+            var sp = @"create procedure [dbo].[GetUseCaseLogs]
                     @dateFrom datetime,
                     @dateTo datetime,
                     @useCaseName nvarchar(30),
@@ -20,7 +20,7 @@ namespace Blog.DataAccess.Migrations
 	                        (@username is null OR Username like '%'+@username+'%')
                     end";
 
-           migrationBuilder.Sql(sp);
+            migrationBuilder.Sql(sp);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

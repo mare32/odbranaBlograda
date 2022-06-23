@@ -13,6 +13,7 @@ namespace Blog.Domain.Entities
         public int AuthorId { get; set; }
         public int CoverImage { get; set; }
         public int Health { get; set; }
+        public int Shield { get; set; }
         public int StatusId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

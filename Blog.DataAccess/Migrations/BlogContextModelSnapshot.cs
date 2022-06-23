@@ -82,6 +82,11 @@ namespace Blog.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(100);
 
+                    b.Property<int>("Shield")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
