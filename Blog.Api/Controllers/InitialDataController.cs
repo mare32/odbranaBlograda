@@ -50,7 +50,7 @@ namespace Blog.Api.Controllers
                 {
                     Username = "pera",
                     Email = "pera@gmail.com",
-                    Password = "lozinka",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",//lozinka
                     FirstName = "Petar",
                     LastName = "Peric",
                     Role = roles.ElementAt(1)
@@ -59,7 +59,7 @@ namespace Blog.Api.Controllers
                 {
                     Username = "mika",
                     Email = "mika@gmail.com",
-                    Password = "lozinka",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
                     FirstName = "Mitar",
                     LastName = "Mikic",
                     Role = roles.ElementAt(1)
@@ -68,7 +68,7 @@ namespace Blog.Api.Controllers
                 {
                     Username = "admin",
                     Email = "admin@gmail.com",
-                    Password = "lozinka",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
                     FirstName = "Tika",
                     LastName = "Tikic",
                     Role = roles.ElementAt(0)

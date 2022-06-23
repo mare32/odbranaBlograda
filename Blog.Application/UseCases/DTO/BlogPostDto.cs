@@ -15,10 +15,12 @@ namespace Blog.Application.UseCases.DTO
         public IEnumerable<CategoryDto> Categories { get; set; }
         public IEnumerable<int> BlogPostImageIds { get; set; }
         public int CoverImageId { get; set; }
-        // potencijalno dolazi i sa komentarima al to je mozda i previse
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public int VoteScore { get; set; }
         public int TotalVotes { get; set; }
+        public string Status { get; set; }
+        public int Health { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

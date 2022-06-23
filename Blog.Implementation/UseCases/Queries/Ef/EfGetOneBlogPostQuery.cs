@@ -50,6 +50,9 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                     Name = y.Category.Name,
                     Id = y.Category.Id
                 }).ToList(),
+                Status = blogPost.Status.Name,
+                Health = blogPost.Health,
+                CreatedAt = blogPost.CreatedAt,
                 TotalVotes = blogPost.Votes.Count,
                 UpVotes = blogPost.Votes.Where(y => y.TypeId == 1).Count(),
                 DownVotes = blogPost.Votes.Where(y => y.TypeId == 2).Count(),

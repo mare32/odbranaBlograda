@@ -25,7 +25,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
         public PagedResponse<BlogPostDto> Execute(BasePagedSearch search)
         {
-            var query = Context.BlogPosts.Include( x => x.Author).AsQueryable();
+            var query = Context.BlogPosts.Include( x => x.Author).Include(x => x.Status).AsQueryable();
 
             if (!string.IsNullOrEmpty(search.Keyword))
             {
@@ -57,7 +57,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                     FirstName = x.Author.FirstName,
                     LastName = x.Author.LastName,
                     Username = x.Author.Username,
-                    Email = x.Author.Email
+                    Email = x.Author.Email,
                 },
                 CoverImageId = x.CoverImage,
                 BlogPostImageIds = x.BlogPostImages.Select(y => y.ImageId).ToArray(),
@@ -66,10 +66,14 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                     Name = y.Category.Name, 
                     Id = y.Category.Id
                 }).ToList(),
+                Status = x.Status.Name,
+                Health = x.Health,
+                CreatedAt = x.CreatedAt,
                 TotalVotes = x.Votes.Count,
                 UpVotes = x.Votes.Where(y => y.TypeId == 1).Count(),
                 DownVotes = x.Votes.Where(y => y.TypeId == 2).Count(),
                 VoteScore = x.Votes.Where(y => y.TypeId == 1).Count() - x.Votes.Where(y => y.TypeId == 2).Count()
+
             }).ToList();
             response.CurrentPage = search.Page.Value;
             response.ItemsPerPage = search.PerPage.Value;
