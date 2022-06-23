@@ -35,7 +35,8 @@ namespace Blog.Implementation.UseCases.Commands
             _validator.ValidateAndThrow(dto);
             int? postId = null;
             int? commId = null;
-            Vote postojeciVote = new Vote();
+            Vote postojeciPostVote = new Vote();
+            bool identicanVoteUradjen = false;
             Vote vote = new Vote();
             if (dto.BlogPostId.HasValue && dto.CommentId.HasValue)
             {
@@ -48,7 +49,12 @@ namespace Blog.Implementation.UseCases.Commands
                     throw new EntityNotFoundException(nameof(BlogPost), dto.BlogPostId.Value);
                 }
                 postId = dto.BlogPostId.Value;
-                postojeciVote = Context.Votes.FirstOrDefault(x => x.UserId == _user.Id && x.PostId == dto.BlogPostId);
+                postojeciPostVote = Context.Votes.FirstOrDefault(x => x.UserId == _user.Id && x.PostId == dto.BlogPostId);
+                if(postojeciPostVote != null)
+                {
+                    if (postojeciPostVote.TypeId == dto.VoteType)
+                        identicanVoteUradjen = true;
+                }
             }
             if(dto.CommentId.HasValue)
             {
@@ -57,9 +63,9 @@ namespace Blog.Implementation.UseCases.Commands
                     throw new EntityNotFoundException(nameof(BlogPost), dto.BlogPostId.Value);
                 }
                 commId = dto.CommentId.Value;
-                postojeciVote = Context.Votes.FirstOrDefault(x => x.UserId == _user.Id && x.CommentId == dto.CommentId);
+                postojeciPostVote = Context.Votes.FirstOrDefault(x => x.UserId == _user.Id && x.CommentId == dto.CommentId);
             }
-            if (postojeciVote == null)
+            if (postojeciPostVote == null)
             {
                 vote = new Vote
                 {
@@ -87,40 +93,57 @@ namespace Blog.Implementation.UseCases.Commands
                         }
                     }
                 }
+                Context.Votes.Add(vote);
             }
             else
             {
-                Context.Votes.Remove(postojeciVote);
-                vote = new Vote
+                if(postojeciPostVote.TypeId == 1)
                 {
-                    UserId = _user.Id,
-                    PostId = postId,
-                    CommentId = commId,
-                    TypeId = dto.VoteType
-                };
-                if (postId != null)
+                    postojeciPostVote.BlogPost.Health += 10;
+                }
+                else
                 {
-                    var blogPost = Context.BlogPosts.Find(postId.Value);
-                    // napraviti reusable funkciju za kod ispod
-                    if (vote.TypeId == 2)
+                    postojeciPostVote.BlogPost.Health -= 10;
+                    if (postojeciPostVote.BlogPost.Health < 0)
                     {
-                        blogPost.Health += 10;
-                        if (blogPost.Health > 100)
-                            blogPost.Health = 100;
+                        postojeciPostVote.BlogPost.Health = 1;
                     }
-                    else
+                }
+                Context.Votes.Remove(postojeciPostVote);
+                if(!identicanVoteUradjen)
+                {
+                    vote = new Vote
                     {
-                        blogPost.Health -= 10;
-                        if (blogPost.Health < 0)
+                        UserId = _user.Id,
+                        PostId = postId,
+                        CommentId = commId,
+                        TypeId = dto.VoteType
+                    };
+                    if (postId != null)
+                    {
+                        var blogPost = Context.BlogPosts.Find(postId.Value);
+                        // napraviti reusable funkciju za kod ispod
+                        if (vote.TypeId == 2)
                         {
-                            blogPost.Health = 0;
-                            blogPost.StatusId = 3;
+                            blogPost.Health += 10;
+                            if (blogPost.Health > 100)
+                                blogPost.Health = 100;
+                        }
+                        else
+                        {
+                            blogPost.Health -= 10;
+                            if (blogPost.Health < 0)
+                            {
+                                blogPost.Health = 0;
+                                blogPost.StatusId = 3;
+                            }
                         }
                     }
+                    Context.Votes.Add(vote);
                 }
             }
 
-            Context.Votes.Add(vote);
+            
             Context.SaveChanges();
 
         }
