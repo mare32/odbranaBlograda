@@ -38,6 +38,13 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 CommentText = x.CommentText,
                 BlogPostId = x.PostId,
                 TotalVotes = x.Votes.Count,
+                User = new UserDto 
+                { 
+                    Username = x.User.Username, 
+                    Email = x.User.Email,
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
+                },
                 UpVotes = x.Votes.Where( y => y.TypeId == 1).Count(),
                 DownVotes = x.Votes.Where(y => y.TypeId == 2).Count(),
                 VoteScore = x.Votes.Where(y => y.TypeId == 1).Count() - x.Votes.Where(y => y.TypeId == 2).Count()

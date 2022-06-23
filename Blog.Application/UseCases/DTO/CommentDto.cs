@@ -20,5 +20,6 @@ namespace Blog.Application.UseCases.DTO
         public int DownVotes { get; set; }
         public int UpVotes { get; set; }
         public int VoteScore { get; set; }
+        public UserDto User {get;  set;}
     }
 }
