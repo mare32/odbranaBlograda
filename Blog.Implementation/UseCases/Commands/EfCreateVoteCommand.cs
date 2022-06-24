@@ -38,6 +38,7 @@ namespace Blog.Implementation.UseCases.Commands
             int maxHealth = 100;
             int statusDead = 3;
             Vote postojeciPostVote = new Vote();
+            Vote postojeciCommentVote = new Vote();
             bool identicanVoteUradjen = false;
             Vote vote = new Vote();
             if (dto.BlogPostId.HasValue && dto.CommentId.HasValue)
@@ -65,9 +66,14 @@ namespace Blog.Implementation.UseCases.Commands
                     throw new EntityNotFoundException(nameof(BlogPost), dto.BlogPostId.Value);
                 }
                 commId = dto.CommentId.Value;
-                postojeciPostVote = Context.Votes.FirstOrDefault(x => x.UserId == _user.Id && x.CommentId == dto.CommentId);
+                postojeciCommentVote = Context.Votes.FirstOrDefault(x => x.UserId == _user.Id && x.CommentId == dto.CommentId);
+                if (postojeciCommentVote != null)
+                {
+                    if (postojeciCommentVote.TypeId == dto.VoteType)
+                        identicanVoteUradjen = true;
+                }
             }
-            if (postojeciPostVote == null)
+            if (postojeciPostVote == null && commId == null)
             {
                 vote = new Vote
                 {
@@ -110,7 +116,7 @@ namespace Blog.Implementation.UseCases.Commands
                 }
                 Context.Votes.Add(vote);
             }
-            else
+            else if(commId == null)
             {
                 if(postojeciPostVote.TypeId == 1)
                 {
@@ -207,8 +213,33 @@ namespace Blog.Implementation.UseCases.Commands
                     Context.Votes.Add(vote);
                 }
             }
+            if (postojeciCommentVote == null && postId == null)
+            {
+                vote = new Vote
+                {
+                    UserId = _user.Id,
+                    PostId = postId,
+                    CommentId = commId,
+                    TypeId = dto.VoteType
+                };
+                Context.Votes.Add(vote);
+            }
+            else if (postId == null)
+            {
+                Context.Votes.Remove(postojeciCommentVote);
+                if (!identicanVoteUradjen)
+                {
+                    vote = new Vote
+                    {
+                        UserId = _user.Id,
+                        PostId = postId,
+                        CommentId = commId,
+                        TypeId = dto.VoteType
+                    };
+                    Context.Votes.Add(vote);
+                }
+            }
 
-            
             Context.SaveChanges();
 
         }

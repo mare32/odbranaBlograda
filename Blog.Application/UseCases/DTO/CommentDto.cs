@@ -21,5 +21,6 @@ namespace Blog.Application.UseCases.DTO
         public int UpVotes { get; set; }
         public int VoteScore { get; set; }
         public UserDto User {get;  set;}
+        public DateTime CommentedAt { get; set; }
     }
 }

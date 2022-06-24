@@ -38,6 +38,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 CommentText = x.CommentText,
                 BlogPostId = x.PostId,
                 TotalVotes = x.Votes.Count,
+                CommentedAt = x.CommentedAt,
                 User = new UserDto 
                 { 
                     Username = x.User.Username, 
