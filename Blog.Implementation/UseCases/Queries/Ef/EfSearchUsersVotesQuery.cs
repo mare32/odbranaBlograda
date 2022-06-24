@@ -30,10 +30,10 @@ namespace Blog.Implementation.UseCases.Queries.Ef
         {
 
             var query = Context.Votes.Include( x=>x.BlogPost).Include( x => x.Comment).AsQueryable();
-
+            query = query.Where(x => x.UserId == _user.Id);
             if (!string.IsNullOrEmpty(search.Keyword))
             {
-                query = query.Where(x => x.UserId == _user.Id && ( x.BlogPost.Title.Contains(search.Keyword) || x.Comment.CommentText.Contains(search.Keyword)));
+                query = query.Where(x => x.BlogPost.Title.Contains(search.Keyword) || x.Comment.CommentText.Contains(search.Keyword));
             }
 
             if (search.PerPage == null || search.PerPage < 1)
