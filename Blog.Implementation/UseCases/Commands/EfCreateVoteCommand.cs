@@ -35,6 +35,8 @@ namespace Blog.Implementation.UseCases.Commands
             _validator.ValidateAndThrow(dto);
             int? postId = null;
             int? commId = null;
+            int maxHealth = 100;
+            int statusDead = 3;
             Vote postojeciPostVote = new Vote();
             bool identicanVoteUradjen = false;
             Vote vote = new Vote();
@@ -80,12 +82,25 @@ namespace Blog.Implementation.UseCases.Commands
                     if(vote.TypeId == 2)
                     {
                         blogPost.Health += 10;
-                        if (blogPost.Health > 100)
-                            blogPost.Health = 100;
+                        if (blogPost.Health > maxHealth)
+                        {
+                            blogPost.Shield += 5;
+                            blogPost.Health = maxHealth;
+                        }
                     }
                     else
                     {
-                        blogPost.Health -= 10;
+                        if (blogPost.Shield > 0)
+                        {
+                            blogPost.Shield -= 5;
+                            if (blogPost.Shield < 0)
+                                blogPost.Shield = 0;
+                            blogPost.Health -= 5;
+                        }
+                        else
+                        {
+                            blogPost.Health -= 10;
+                        }
                         if (blogPost.Health < 0)
                         {
                             blogPost.Health = 0;
@@ -99,14 +114,44 @@ namespace Blog.Implementation.UseCases.Commands
             {
                 if(postojeciPostVote.TypeId == 1)
                 {
-                    postojeciPostVote.BlogPost.Health += 10;
+                    if(postojeciPostVote.BlogPost.Shield > 0)
+                    {
+                        postojeciPostVote.BlogPost.Shield += 5;
+                        postojeciPostVote.BlogPost.Health += 5;
+                        if(postojeciPostVote.BlogPost.Health > maxHealth)
+                        {
+                            postojeciPostVote.BlogPost.Health = maxHealth;
+                        }
+                    }
+                    else
+                    {
+                        postojeciPostVote.BlogPost.Health += 10;
+                    }
                 }
                 else
                 {
-                    postojeciPostVote.BlogPost.Health -= 10;
-                    if (postojeciPostVote.BlogPost.Health < 0)
+                    if(postojeciPostVote.BlogPost.Shield > 0 && postojeciPostVote.BlogPost.Health == maxHealth)
                     {
-                        postojeciPostVote.BlogPost.Health = 1;
+                        postojeciPostVote.BlogPost.Shield -= 5;
+                    }
+                    else if (postojeciPostVote.BlogPost.Shield > 0)
+                    {
+                        postojeciPostVote.BlogPost.Shield -= 5;
+                        postojeciPostVote.BlogPost.Health -= 5;
+                        if (postojeciPostVote.BlogPost.Shield < 0)
+                            postojeciPostVote.BlogPost.Shield = 0;
+                        if (postojeciPostVote.BlogPost.Health < 0)
+                        {
+                            postojeciPostVote.BlogPost.Health = 1;
+                        }
+                    }
+                    else
+                    {
+                        postojeciPostVote.BlogPost.Health -= 10;
+                        if (postojeciPostVote.BlogPost.Health < 0)
+                        {
+                            postojeciPostVote.BlogPost.Health = 1;
+                        }
                     }
                 }
                 Context.Votes.Remove(postojeciPostVote);
@@ -125,17 +170,37 @@ namespace Blog.Implementation.UseCases.Commands
                         // napraviti reusable funkciju za kod ispod
                         if (vote.TypeId == 2)
                         {
-                            blogPost.Health += 10;
-                            if (blogPost.Health > 100)
-                                blogPost.Health = 100;
+                            if (blogPost.Health >= maxHealth)
+                            {
+                                blogPost.Shield += 5;
+                            }
+                            else
+                            {
+                                blogPost.Health += 10;
+                                if (blogPost.Health > maxHealth)
+                                {
+                                    blogPost.Shield += 5;
+                                    blogPost.Health = maxHealth;
+                                }
+                            }
                         }
                         else
                         {
-                            blogPost.Health -= 10;
+                            if(blogPost.Shield > 0)
+                            {
+                                blogPost.Health -= 5;
+                                blogPost.Shield -= 5;
+                                if (blogPost.Shield < 0)
+                                    blogPost.Shield = 0;
+                            }
+                            else
+                            {
+                                blogPost.Health -= 10;
+                            }
                             if (blogPost.Health < 0)
                             {
                                 blogPost.Health = 0;
-                                blogPost.StatusId = 3;
+                                blogPost.StatusId = statusDead;
                             }
                         }
                     }
