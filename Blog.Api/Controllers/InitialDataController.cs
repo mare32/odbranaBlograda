@@ -32,10 +32,10 @@ namespace Blog.Api.Controllers
             //var context = new BlogContext();
             // Provera da li data ulazi po prvi put
 
-            //if(context.Users.Any())
-            //{
-            //    return StatusCode(409);
-            //}
+            if (context.Users.Any())
+            {
+                return StatusCode(409);
+            }
 
 
             var roles = new List<Role>
@@ -44,16 +44,17 @@ namespace Blog.Api.Controllers
                 new Role{ Name = "Normal"}
             };
 
+            // 8 korisnika
             var users = new List<User>
             {
                 new User
                 {
-                    Username = "pera",
-                    Email = "pera@gmail.com",
-                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",//lozinka
-                    FirstName = "Petar",
-                    LastName = "Peric",
-                    Role = roles.ElementAt(1)
+                    Username = "admin",
+                    Email = "admin@gmail.com",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
+                    FirstName = "Tika",
+                    LastName = "Tikic",
+                    Role = roles.ElementAt(0)
                 },
                 new User
                 {
@@ -66,15 +67,61 @@ namespace Blog.Api.Controllers
                 },
                 new User
                 {
-                    Username = "admin",
-                    Email = "admin@gmail.com",
+                    Username = "pera",
+                    Email = "pera@gmail.com",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",//lozinka
+                    FirstName = "Petar",
+                    LastName = "Peric",
+                    Role = roles.ElementAt(1)
+                },
+                new User
+                {
+                    Username = "zika",
+                    Email = "zika@gmail.com",
                     Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
-                    FirstName = "Tika",
-                    LastName = "Tikic",
-                    Role = roles.ElementAt(0)
+                    FirstName = "Zika",
+                    LastName = "Zikic",
+                    Role = roles.ElementAt(1)
+                },
+                new User
+                {
+                    Username = "mile",
+                    Email = "mile@gmail.com",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
+                    FirstName = "Milan",
+                    LastName = "Milic",
+                    Role = roles.ElementAt(1)
+                },
+                new User
+                {
+                    Username = "djole",
+                    Email = "djole@gmail.com",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
+                    FirstName = "Djordje",
+                    LastName = "Djordjevic",
+                    Role = roles.ElementAt(1)
+                },
+                new User
+                {
+                    Username = "tanja",
+                    Email = "tanja@gmail.com",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
+                    FirstName = "Tatjana",
+                    LastName = "Tatjanovic",
+                    Role = roles.ElementAt(1)
+                },
+                new User
+                {
+                    Username = "nina",
+                    Email = "nina@gmail.com",
+                    Password = "$2a$11$Fh30e2Ivjz2CRzvlrfYfmewDxr7em8oNgxs55OOH.bzOcQuly09dC",
+                    FirstName = "Nikolina",
+                    LastName = "Nikolic",
+                    Role = roles.ElementAt(1)
                 }
+                
             };
-
+            // 8 slika
             var images = new List<Image>
             {
                 new Image{ Src = @"wwwroot\images\first.jpg", Alt = "first"},
@@ -82,8 +129,11 @@ namespace Blog.Api.Controllers
                 new Image{ Src = @"wwwroot\images\third.jpg", Alt = "third"},
                 new Image{ Src = @"wwwroot\images\fourth.jpg", Alt = "fourth"},
                 new Image{ Src = @"wwwroot\images\fifth.jpg", Alt = "fifth"},
+                new Image{ Src = @"wwwroot\images\sixth.jpg", Alt = "sixth"},
+                new Image{ Src = @"wwwroot\images\seventh.jpg", Alt = "seventh"},
+                new Image{ Src = @"wwwroot\images\eighth.jpg", Alt = "eighth"},
             };
-
+            // 5 kategorija
             var categories = new List<Category>
             {
                 new Category { Name = "Travel"},
@@ -91,6 +141,8 @@ namespace Blog.Api.Controllers
                 new Category { Name = "Health"},
                 new Category { Name = "Politics"},
                 new Category { Name = "Drama"},
+                new Category { Name = "Science"},
+                new Category { Name = "Event"},
             };
 
             var votetypes = new List<VoteType>
@@ -98,7 +150,7 @@ namespace Blog.Api.Controllers
                 new VoteType{ Type = "Attack"},
                 new VoteType{ Type = "Defend"}
             };
-
+            // 5 statusa 
             var statuses = new List<Status>
             {
                 new Status{ Name = "Alive"},
@@ -107,6 +159,7 @@ namespace Blog.Api.Controllers
                 new Status{ Name = "Popular"},
                 new Status{ Name = "Amazing"}
             };
+            // ukupno 32 use case-a
             var anonusecase = new UseCase {Id = 1002, Name = "Register", Description = "Create a new blogpost" };
             var normalusecases = new List<UseCase>
             {
@@ -187,6 +240,7 @@ namespace Blog.Api.Controllers
             //    new AuditLog { IsAuthorized = true , UseCaseName = "New BlogPost", UserId = 1, Username = "pera", Data="User pera created a new blogpost [test]" },
             //};
 
+            // 5 blogpost-ova
             var blogposts = new List<BlogPost>
             {
                 new BlogPost
@@ -213,6 +267,22 @@ namespace Blog.Api.Controllers
                     Author = users.ElementAt(1),
                     Status = statuses.First(),
                 },
+                new BlogPost
+                {
+                    Title = "War on Ukraine is only for money and land",
+                    CoverImage = 1,
+                    BlogPostContent = "Nothing is going to happen, it won't escalate and you can't prove me wrong.",
+                    Author = users.ElementAt(4),
+                    Status = statuses.First(),
+                },,
+                new BlogPost
+                {
+                    Title = "New Advent of Code Event is soon",
+                    CoverImage = 1,
+                    BlogPostContent = "Programmers, better prepare for this year's winter season of coding adventures! Get cozy, warm, and wreck those keyboard buttons!",
+                    Author = users.ElementAt(5),
+                    Status = statuses.First(),
+                },
             };
 
             var blogpostcategories = new List<BlogPostCategory>
@@ -222,6 +292,10 @@ namespace Blog.Api.Controllers
                 new BlogPostCategory{ BlogPost = blogposts.ElementAt(1), Category = categories.ElementAt(0) },
                 new BlogPostCategory{ BlogPost = blogposts.ElementAt(1), Category = categories.ElementAt(1) },
                 new BlogPostCategory{ BlogPost = blogposts.ElementAt(2), Category = categories.ElementAt(4) },
+                new BlogPostCategory{ BlogPost = blogposts.ElementAt(3), Category = categories.ElementAt(3) },
+                new BlogPostCategory{ BlogPost = blogposts.ElementAt(3), Category = categories.ElementAt(4) },
+                new BlogPostCategory{ BlogPost = blogposts.ElementAt(4), Category = categories.ElementAt(5) },
+                new BlogPostCategory{ BlogPost = blogposts.ElementAt(4), Category = categories.ElementAt(6) },
             };
 
             var blogpostimages = new List<BlogPostImage>
@@ -231,6 +305,8 @@ namespace Blog.Api.Controllers
                 new BlogPostImage {BlogPost = blogposts.ElementAt(1), Image = images.ElementAt(2)},
                 new BlogPostImage {BlogPost = blogposts.ElementAt(1), Image = images.ElementAt(3)},
                 new BlogPostImage {BlogPost = blogposts.ElementAt(2), Image = images.ElementAt(4)},
+                new BlogPostImage {BlogPost = blogposts.ElementAt(3), Image = images.ElementAt(5)},
+                new BlogPostImage {BlogPost = blogposts.ElementAt(4), Image = images.ElementAt(6)},
             };
             var comments = new List<Comment>
             {
