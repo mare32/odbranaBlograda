@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Application.UseCases.Queries
 {
-    public interface ISearchBlogPostsQuery : IQuery<BasePagedSearch, PagedResponse<BlogPostDto>>
+    public interface ISearchBlogPostsQuery : IQuery<SearchBlogPostsDto, PagedResponse<BlogPostDto>>
     {
     }
 }

@@ -54,6 +54,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 Health = blogPost.Health,
                 Shield = blogPost.Shield,
                 CreatedAt = blogPost.CreatedAt,
+                StatusUpdatedAt = blogPost.StatusUpdatedAt,
                 TotalVotes = blogPost.Votes.Count,
                 UpVotes = blogPost.Votes.Where(y => y.TypeId == 1).Count(),
                 DownVotes = blogPost.Votes.Where(y => y.TypeId == 2).Count(),

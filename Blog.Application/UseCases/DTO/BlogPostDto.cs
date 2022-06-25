@@ -23,5 +23,6 @@ namespace Blog.Application.UseCases.DTO
         public int Health { get; set; }
         public int Shield { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime? StatusUpdatedAt { get; set; }
     }
 }

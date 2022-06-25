@@ -2,6 +2,7 @@
 using Blog.Application.UseCases.DTO.Base;
 using Blog.Application.UseCases.Queries;
 using Blog.DataAccess;
+using Blog.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,10 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 {
     public class EfSearchBlogPostsQuery : EfUseCase, ISearchBlogPostsQuery
     {
-        public EfSearchBlogPostsQuery(BlogContext context) : base(context)
+        IApplicationUser _user;
+        public EfSearchBlogPostsQuery(BlogContext context, IApplicationUser user) : base(context)
         {
+            _user = user;
         }
 
         public int Id => 2006;
@@ -23,7 +26,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
         public string Description => "Searching blog posts with a keyword using EF";
 
-        public PagedResponse<BlogPostDto> Execute(BasePagedSearch search)
+        public PagedResponse<BlogPostDto> Execute(SearchBlogPostsDto search)
         {
             var query = Context.BlogPosts.Include( x => x.Author).Include(x => x.Status).AsQueryable();
 
@@ -31,6 +34,14 @@ namespace Blog.Implementation.UseCases.Queries.Ef
             {
                 query = query.Where(x => x.Title.Contains(search.Keyword) || x.Author.Username.Contains(search.Keyword));
             }
+
+
+            if (search.LoggedUsersPosts)
+                query = query.Where(x => x.AuthorId == _user.Id);
+
+            if(search.AuthorId.HasValue)
+                query = query.Where(x => x.AuthorId == search.AuthorId.Value);
+
 
             if (search.PerPage == null || search.PerPage < 1)
             {
@@ -70,6 +81,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 Health = x.Health,
                 Shield = x.Shield,
                 CreatedAt = x.CreatedAt,
+                StatusUpdatedAt = x.StatusUpdatedAt,
                 TotalVotes = x.Votes.Count,
                 UpVotes = x.Votes.Where(y => y.TypeId == 1).Count(),
                 DownVotes = x.Votes.Where(y => y.TypeId == 2).Count(),

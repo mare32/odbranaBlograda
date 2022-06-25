@@ -48,7 +48,7 @@ namespace Blog.Api.Controllers
         /// <response code="500">Unexpected server error.</response>
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Get([FromQuery] BasePagedSearch search, [FromServices] ISearchBlogPostsQuery query)
+        public IActionResult Get([FromQuery] SearchBlogPostsDto search, [FromServices] ISearchBlogPostsQuery query)
         {
 
             return Ok(_handler.HandleQuery(query,search));

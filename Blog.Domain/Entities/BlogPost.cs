@@ -17,6 +17,7 @@ namespace Blog.Domain.Entities
         public int StatusId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public DateTime? StatusUpdatedAt { get; set; }
 
         public virtual ICollection<BlogPostCategory> BlogPostCategories { get; set; }
         public virtual ICollection<Vote> Votes { get; set; }
