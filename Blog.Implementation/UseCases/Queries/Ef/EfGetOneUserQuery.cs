@@ -3,6 +3,7 @@ using Blog.Application.UseCases.DTO;
 using Blog.Application.UseCases.Queries;
 using Blog.DataAccess;
 using Blog.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,21 +25,22 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
         public string Description => "See details of one user using EF";
 
-        public UserDto Execute(int request)
+        public UserWithRoleDto Execute(int request)
         {
-            var user = Context.Users.FirstOrDefault( x => x.Id == request && x.Active == 1);
+            var user = Context.Users.Include(x => x.Role).FirstOrDefault( x => x.Id == request && x.Active == 1);
             if(user == null)
             {
                 throw new EntityNotFoundException(nameof(User), request);
             }
 
-            return new UserDto
+            return new UserWithRoleDto
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Username = user.Username
+                Username = user.Username,
+                Role = user.Role.Name
             };
         }
     }

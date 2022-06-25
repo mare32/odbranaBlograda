@@ -40,16 +40,17 @@ namespace Blog.Implementation.UseCases.Commands
 
             var CoverImg = Context.Images.FirstOrDefault(x => x.Src == request.ImageSrc);
             int idCoverImg = CoverImg.Id;
+            var aliveStatus = Context.Status.FirstOrDefault(x => x.Name == "Alive");
             var post = new BlogPost
             {
                 Title = request.Title,
                 BlogPostContent = request.BlogPostContent,
                 AuthorId = request.AuthorId.Value,
-                CoverImage = idCoverImg
+                CoverImage = idCoverImg,
+                StatusId = aliveStatus.Id
             };
             Context.BlogPosts.Add(post);
             Context.SaveChanges();
-
             var addedPost = Context.BlogPosts.FirstOrDefault(x => x.Title == request.Title && x.AuthorId == request.AuthorId);
             var blogPostImage = new BlogPostImage { ImageId = idCoverImg, PostId = addedPost.Id };
             var blogPostCategories = request.CategoryIds.Select(x => new BlogPostCategory

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Application.UseCases.Queries
 {
-    public interface IGetOneUserQuery : IQuery<int, UserDto>
+    public interface IGetOneUserQuery : IQuery<int, UserWithRoleDto>
     {
     }
 }
