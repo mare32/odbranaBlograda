@@ -37,7 +37,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
 
             if (search.LoggedUsersPosts)
-                query = query.Where(x => x.AuthorId == _user.Id);
+                query = query.Where(x => x.Author.Id == _user.Id);
 
             if(search.AuthorId.HasValue)
                 query = query.Where(x => x.AuthorId == search.AuthorId.Value);

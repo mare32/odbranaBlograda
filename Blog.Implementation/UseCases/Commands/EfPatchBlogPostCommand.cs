@@ -41,9 +41,9 @@ namespace Blog.Implementation.UseCases.Commands
             {
                 throw new ForbiddenUseCaseExecutionException(Name, _user.Email);
             }
-            if (dto.BlogPostContent != null)
+            if (!string.IsNullOrEmpty(dto.BlogPostContent))
                 blogPost.BlogPostContent = dto.BlogPostContent;
-            if (dto.Title != null)
+            if (!string.IsNullOrEmpty(dto.Title))
                 blogPost.Title = dto.Title;
             if (dto.CoverImgId != null && blogPost.BlogPostImages.Any(x => x.ImageId == dto.CoverImgId))
                 blogPost.CoverImage = dto.CoverImgId.Value;
