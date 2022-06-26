@@ -42,6 +42,7 @@ namespace Blog.Implementation.UseCases.Commands
                     Context.Votes.RemoveRange(childComment.Votes);
                 }
             Context.Comments.RemoveRange(childComments);
+                Context.SaveChanges();
             }
             if (comment.Votes.Any())
                 Context.Votes.RemoveRange(comment.Votes);

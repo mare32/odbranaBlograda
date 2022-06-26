@@ -9,5 +9,6 @@ namespace Blog.Application.UseCases.DTO
     public class UserWithRoleDto : UserDto
     {
         public string Role { get; set; }
+        public IEnumerable<SimpleBlogPostDto> BlogPosts { get; set; }
     }
 }

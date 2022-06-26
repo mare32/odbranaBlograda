@@ -3,6 +3,7 @@ using Blog.Application.UseCases.Commands;
 using Blog.DataAccess;
 using Blog.Domain;
 using Blog.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,7 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(int request)
         {
-            var user = Context.Users.FirstOrDefault(x => x.Id == request);
+            var user = Context.Users.Include(x => x.Votes).Include(x => x.BlogPosts).Include(x => x.Comments).FirstOrDefault(x => x.Id == request);
             if(user == null)
             {
                 throw new EntityNotFoundException(nameof(User), request);
@@ -37,10 +38,33 @@ namespace Blog.Implementation.UseCases.Commands
             {
                 throw new Exception("Brisanje sopstvenog naloga nije moguce.");
             }
-           
-            if(user.BlogPosts.Any())
+            if (user.Votes.Any())
+                Context.Votes.RemoveRange(user.Votes);
+            if (user.Comments.Any())
             {
-                foreach(var blogPost in user.BlogPosts)
+                    foreach(var comment in user.Comments)
+                    {
+                        var childComments = Context.Comments.Include(x => x.Votes).Where(x => x.ParentId == comment.Id);
+                        if (childComments.Any())
+                        {
+                            foreach (var childComment in childComments)
+                            {
+                                if (childComment.Votes.Any())
+                                    Context.Votes.RemoveRange(childComment.Votes);
+                            }
+                            Context.Comments.RemoveRange(childComments);
+                        }
+                        if (comment.Votes.Any())
+                            Context.Votes.RemoveRange(comment.Votes);
+                        Context.Comments.Remove(comment);
+                        Context.SaveChanges();
+                    }
+                Context.Comments.RemoveRange(user.Comments);
+                Context.SaveChanges();
+            }
+            if (user.BlogPosts.Any())
+            {
+                foreach (var blogPost in user.BlogPosts)
                 {
                     var id = blogPost.Id;
                     var blogPostCategories = Context.BlogPostCategories.Where(x => x.PostId == id);
@@ -61,18 +85,21 @@ namespace Blog.Implementation.UseCases.Commands
                         var commentVotes = Context.Votes.Where(x => comments.Any(y => x.CommentId == y.Id));
                         if (commentVotes.Any())
                             Context.Votes.RemoveRange(commentVotes);
-
+                        foreach (var comment in comments)
+                        {
+                            var childComments = Context.Comments.Where(x => x.ParentId == comment.Id);
+                            Context.Comments.RemoveRange(childComments);
+                        }
+                        Context.SaveChanges();
                         Context.Comments.RemoveRange(comments);
                     }
                     Context.BlogPosts.Remove(blogPost);
                 }
             }
-            
-            
-            if(user.Votes.Any())
-                Context.Votes.RemoveRange(user.Votes);
-            if (user.Comments.Any())
-                Context.Comments.RemoveRange(user.Comments);
+
+
+
+
             Context.UserUseCases.RemoveRange(user.UserUseCases);
             Context.Users.Remove(user);
             Context.SaveChanges();

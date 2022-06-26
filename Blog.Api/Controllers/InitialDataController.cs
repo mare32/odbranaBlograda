@@ -235,11 +235,6 @@ namespace Blog.Api.Controllers
                 }
             }
 
-            //var auditlogs = new List<AuditLog>
-            //{
-            //    new AuditLog { IsAuthorized = true , UseCaseName = "New BlogPost", UserId = 1, Username = "pera", Data="User pera created a new blogpost [test]" },
-            //};
-
             // 5 blogpost-ova
             var blogposts = new List<BlogPost>
             {
@@ -274,7 +269,7 @@ namespace Blog.Api.Controllers
                     BlogPostContent = "Nothing is going to happen, it won't escalate and you can't prove me wrong.",
                     Author = users.ElementAt(4),
                     Status = statuses.First(),
-                },,
+                },
                 new BlogPost
                 {
                     Title = "New Advent of Code Event is soon",
@@ -313,14 +308,6 @@ namespace Blog.Api.Controllers
                 new Comment { BlogPost = blogposts.First(),CommentText = "Woah that is so crazy!", User = users.ElementAt(1)},
                 new Comment { BlogPost = blogposts.ElementAt(1),CommentText = "I wish I was there right now...", User = users.ElementAt(2)}
             };
-            var subcomment = new Comment { BlogPost = blogposts.First(), CommentText = "Thank you, we barely survived haha", User = users.ElementAt(0), ParentComment = comments.First() };
-            comments.Add(subcomment);
-
-            //var votes = new List<Vote>
-            //{
-            //    new Vote{ VoteType = votetypes.First(), User = users.ElementAt(1),BlogPost = blogposts.First()},
-            //    new Vote{ VoteType = votetypes.ElementAt(1), User = users.ElementAt(0),Comment = comments.ElementAt(0)}
-            //};
 
             context.Roles.AddRange(roles);
             context.Status.AddRange(statuses);
@@ -332,7 +319,6 @@ namespace Blog.Api.Controllers
             context.UseCases.AddRange(admincases);
             context.UserUseCases.AddRange(normaluserusecases);
             context.UserUseCases.AddRange(adminuserusecases);
-            //context.AuditLogs.AddRange(auditlogs);
             context.BlogPosts.AddRange(blogposts);
             context.BlogPostCategories.AddRange(blogpostcategories);
             context.BlogPostImages.AddRange(blogpostimages);

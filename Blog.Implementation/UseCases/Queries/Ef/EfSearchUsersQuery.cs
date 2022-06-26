@@ -3,6 +3,7 @@ using Blog.Application.UseCases.DTO.Base;
 using Blog.Application.UseCases.Queries;
 using Blog.DataAccess;
 using Blog.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
         public PagedResponse<UserWithRoleDto> Execute(BasePagedSearch request)
         {
-            var query = Context.Users.AsQueryable();
+            var query = Context.Users.Include(x => x.BlogPosts).ThenInclude(x => x.Status).AsQueryable();
             if (!string.IsNullOrEmpty(request.Keyword))
             {
               query = query.Where(x => x.Username.Contains(request.Keyword) ||
@@ -55,7 +56,15 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 LastName = x.LastName,
                 Username = x.Username,
                 Email = x.Email,
-                Role = x.Role.Name
+                Role = x.Role.Name,
+                BlogPosts = x.BlogPosts.Select(b => new SimpleBlogPostDto
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Health = b.Health,
+                    Shield = b.Shield,
+                    Status = b.Status.Name
+                })
             }).ToList();
             response.CurrentPage = request.Page.Value;
             response.ItemsPerPage = request.PerPage.Value;

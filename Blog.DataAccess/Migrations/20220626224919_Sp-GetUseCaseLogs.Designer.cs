@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.DataAccess.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    [Migration("20220625090121_StatusUpdatedAtColumnAdded")]
-    partial class StatusUpdatedAtColumnAdded
+    [Migration("20220626224919_Sp-GetUseCaseLogs")]
+    partial class SpGetUseCaseLogs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

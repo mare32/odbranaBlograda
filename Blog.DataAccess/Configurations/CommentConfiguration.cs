@@ -18,6 +18,9 @@ namespace Blog.DataAccess.Configurations
             builder.Property(x => x.CommentedAt).HasDefaultValueSql("GETDATE()");
 
             // Odavde nastaviti
+            // Donja linije mi je pokvarila kod
+            //builder.HasMany(x => x.Votes).WithOne(x => x.Comment).HasForeignKey(x => x.CommentId).OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }
