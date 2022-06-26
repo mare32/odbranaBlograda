@@ -37,9 +37,15 @@ namespace Blog.Implementation.UseCases.Commands
             {
                 throw new EntityNotFoundException(nameof(BlogPost), dto.Id);
             }
-            if (blogPost.AuthorId != _user.Id)
+            var isAdmin = Context.Users.Any(x => x.Id == _user.Id && x.Role.Name == "Admin");
+            if (blogPost.AuthorId != _user.Id && !isAdmin)
             {
                 throw new ForbiddenUseCaseExecutionException(Name, _user.Email);
+            }
+            if(dto.StatusId != null)
+            {
+                blogPost.StatusId = dto.StatusId.Value;
+                blogPost.StatusUpdatedAt = DateTime.UtcNow;
             }
             if (!string.IsNullOrEmpty(dto.BlogPostContent))
                 blogPost.BlogPostContent = dto.BlogPostContent;

@@ -12,5 +12,7 @@ namespace Blog.Application.UseCases.DTO
         public string Title { get; set; }
         public string BlogPostContent { get; set; }
         public int? CoverImgId { get; set; }
+        public int? StatusId { get; set; }
+        // mozda bolje i status name, al ae za sad
     }
 }
