@@ -245,6 +245,7 @@ namespace Blog.Api.Controllers
                     BlogPostContent = "Climbing up theres was a real challenge but somehow we actualy made it in one piece, gettin down was even harder.",
                     Author = users.First(),
                     Status = statuses.First(),
+                    Health = 15
                 },
                 new BlogPost
                 {
@@ -253,30 +254,35 @@ namespace Blog.Api.Controllers
                     BlogPostContent = "Climbing up theres was a real challenge but somehow we actualy made it in one piece, gettin down was even harder.",
                     Author = users.First(),
                     Status = statuses.First(),
+                    Health = 53,
+                    Shield = 45
                 },
                 new BlogPost
                 {
                     Title = "Amber Heard was RIGHT!",
-                    CoverImage = 1,
+                    CoverImage = 3,
                     BlogPostContent = "Too all Ambers haters, you are wrong, Johnny Depp made so many mistakes, she definitely deserved to win.",
                     Author = users.ElementAt(1),
                     Status = statuses.First(),
+                    Health = 95,
+                    Shield = 97
                 },
                 new BlogPost
                 {
                     Title = "War on Ukraine is only for money and land",
-                    CoverImage = 1,
+                    CoverImage = 4,
                     BlogPostContent = "Nothing is going to happen, it won't escalate and you can't prove me wrong.",
                     Author = users.ElementAt(4),
-                    Status = statuses.First(),
+                    Status = statuses.First()
                 },
                 new BlogPost
                 {
                     Title = "New Advent of Code Event is soon",
-                    CoverImage = 1,
+                    CoverImage = 5,
                     BlogPostContent = "Programmers, better prepare for this year's winter season of coding adventures! Get cozy, warm, and wreck those keyboard buttons!",
                     Author = users.ElementAt(5),
                     Status = statuses.First(),
+                    Health = 10
                 },
             };
 

@@ -15,6 +15,7 @@ namespace Blog.Domain.Entities
         public int Health { get; set; }
         public int Shield { get; set; }
         public int StatusId { get; set; }
+        public int PreviousStatusId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? StatusUpdatedAt { get; set; }

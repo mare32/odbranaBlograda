@@ -87,10 +87,17 @@ namespace Blog.Implementation.UseCases.Commands
                     var blogPost = Context.BlogPosts.Find(postId.Value);
                     if(vote.TypeId == 2)
                     {
-                        blogPost.Health += 10;
-                        if (blogPost.Health > maxHealth)
+                        if(blogPost.Shield > 0)
                         {
                             blogPost.Shield += 5;
+                            blogPost.Health += 5;
+                        }
+                        else
+                        {
+                            blogPost.Health += 10;
+                        }
+                        if (blogPost.Health > maxHealth)
+                        {
                             blogPost.Health = maxHealth;
                         }
                     }
@@ -107,10 +114,11 @@ namespace Blog.Implementation.UseCases.Commands
                         {
                             blogPost.Health -= 10;
                         }
-                        if (blogPost.Health < 0)
+                        if (blogPost.Health <= 0)
                         {
                             blogPost.Health = 0;
                             blogPost.StatusId = 3;
+                            blogPost.StatusUpdatedAt = DateTime.UtcNow;
                         }
                     }
                 }
@@ -203,10 +211,11 @@ namespace Blog.Implementation.UseCases.Commands
                             {
                                 blogPost.Health -= 10;
                             }
-                            if (blogPost.Health < 0)
+                            if (blogPost.Health <= 0)
                             {
                                 blogPost.Health = 0;
                                 blogPost.StatusId = statusDead;
+                                blogPost.StatusUpdatedAt = DateTime.UtcNow;
                             }
                         }
                     }
@@ -239,7 +248,6 @@ namespace Blog.Implementation.UseCases.Commands
                     Context.Votes.Add(vote);
                 }
             }
-
             Context.SaveChanges();
 
         }

@@ -22,8 +22,8 @@ namespace Blog.DataAccess
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
             base.OnModelCreating(modelBuilder);
         }
-        // BITNO - ukoliko trazi neku referencu za api assembly, restartovati VisualStudio i popravice se
-        // Pri migracijjama staviti da se pali DataAccess Sloj, mislim da je bitno
+        // ukoliko trazi neku referencu za api assembly, restartovati VisualStudio i popravice se
+        // Pri migracijjama staviti da se pali DataAccess Sloj
 
         // otkomentarisati pri migracijama
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)

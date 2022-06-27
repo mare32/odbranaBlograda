@@ -41,8 +41,17 @@ namespace Blog.Implementation.UseCases.Queries.Ef
 
             if(search.AuthorId.HasValue)
                 query = query.Where(x => x.AuthorId == search.AuthorId.Value);
-
-
+            if(search.NotInvisOrDead.HasValue)
+            {
+                if(search.NotInvisOrDead.Value)
+                {
+                    query = query.Where(x => x.Status.Name != "Invisible" && x.Status.Name != "Dead");
+                }
+                else
+                {
+                    query = query.Where(x => x.Status.Name == "Invisible" || x.Status.Name == "Dead");
+                }
+            }
             if (search.PerPage == null || search.PerPage < 1)
             {
                 search.PerPage = 5;

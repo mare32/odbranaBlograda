@@ -23,6 +23,7 @@ namespace Blog.DataAccess.Configurations
             builder.Property(x => x.StatusId).HasDefaultValue(1);
             builder.Property(x => x.UpdatedAt).IsRequired(false);
             builder.Property(x => x.StatusUpdatedAt).IsRequired(false);
+            builder.Property(x => x.PreviousStatusId).HasDefaultValue(4);
             builder.HasIndex(x => x.Title);
 
             builder.HasMany( x => x.BlogPostCategories).WithOne( x => x.BlogPost).HasForeignKey(x => x.PostId).OnDelete(DeleteBehavior.Cascade);

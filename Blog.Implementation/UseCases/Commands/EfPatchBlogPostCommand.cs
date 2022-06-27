@@ -44,7 +44,12 @@ namespace Blog.Implementation.UseCases.Commands
             }
             if(dto.StatusId != null)
             {
-                blogPost.StatusId = dto.StatusId.Value;
+                if(blogPost.StatusId != 3 && blogPost.StatusId != 2)
+                    blogPost.PreviousStatusId = blogPost.StatusId;
+                if (dto.StatusId.Value == 0) // povratak na prethodni status
+                    blogPost.StatusId = blogPost.PreviousStatusId;
+                else
+                    blogPost.StatusId = dto.StatusId.Value;
                 blogPost.StatusUpdatedAt = DateTime.UtcNow;
             }
             if (!string.IsNullOrEmpty(dto.BlogPostContent))

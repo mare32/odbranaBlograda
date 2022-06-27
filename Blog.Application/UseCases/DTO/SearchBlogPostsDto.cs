@@ -11,5 +11,6 @@ namespace Blog.Application.UseCases.DTO
     {
         public bool LoggedUsersPosts { get; set; }
         public int? AuthorId { get; set; }
+        public bool? NotInvisOrDead { get; set; }
     }
 }
