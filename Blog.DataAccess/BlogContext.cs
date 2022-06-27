@@ -31,6 +31,13 @@ namespace Blog.DataAccess
         //    optionsbuilder.UseSqlServer(@"Data Source=.\sqlexpress;Initial Catalog=blograd;Integrated Security=true");
         //    base.OnConfiguring(optionsbuilder);
         //}
+
+        // Azure baza
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
+        //{
+        //    optionsbuilder.UseSqlServer(@"Server=tcp:blograd.database.windows.net,1433;Initial Catalog=blograd;Persist Security Info=False;User ID=blogradadmin;Password=lozinka123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        //    base.OnConfiguring(optionsbuilder);
+        //}
         public DbSet<Role> Roles { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<User> Users { get; set; }
