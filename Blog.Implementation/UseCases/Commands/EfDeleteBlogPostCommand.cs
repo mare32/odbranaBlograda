@@ -28,8 +28,7 @@ namespace Blog.Implementation.UseCases.Commands
 
         public void Execute(int id)
         {
-            // ovo sto radim sa authorId-jevima u mnogim klasama je pogresno, refaktorisati
-            var blogPost = Context.BlogPosts.FirstOrDefault( x => x.Id == id && x.AuthorId == _user.Id );
+            var blogPost = Context.BlogPosts.FirstOrDefault( x => x.Id == id);
             if(blogPost == null)
             {
                 throw new EntityNotFoundException(nameof(BlogPost), id);
