@@ -1,4 +1,5 @@
-﻿using Blog.Application.UseCases.Commands;
+﻿using Blog.Api.Core;
+using Blog.Application.UseCases.Commands;
 using Blog.Application.UseCases.DTO;
 using Blog.Application.UseCases.DTO.Base;
 using Blog.Application.UseCases.Queries;
@@ -8,6 +9,7 @@ using Blog.Implementation;
 using Blog.Implementation.UseCases.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -79,6 +81,7 @@ namespace Blog.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="command"></param>
+        /// <param name="deleter"></param>
         /// <returns>HttpResponseMessage</returns>
         /// <remarks>
         /// Sample request:
@@ -96,8 +99,17 @@ namespace Blog.Api.Controllers
         [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult Delete(int id, [FromServices]IDeleteUserCommand command)
+        public IActionResult Delete(int id, [FromServices]IDeleteUserCommand command, [FromServices]IFileDeleter deleter)
         {
+            var usersPosts = _context.BlogPosts.Where(x => x.AuthorId == id).ToList();
+            foreach(var post in usersPosts)
+            {
+                var blogPostImages = _context.BlogPostImages.Include(x => x.Image).Where(x => x.PostId == post.Id).ToList();
+                foreach (var img in blogPostImages)
+                {
+                    deleter.DeleteFile(img.Image.Src);
+                }
+            }
             _handler.HandleCommand(command, id);
             return NoContent();
         }

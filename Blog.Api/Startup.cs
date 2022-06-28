@@ -48,6 +48,7 @@ namespace Blog.Api
             services.AddBlogContext();
             services.AddUseCases();
             services.AddTransient<IFileUploader, S3FileUploader>();
+            services.AddTransient<IFileDeleter, S3FileDeleter>();
             services.AddCors();
             services.AddTransient<IUseCaseLogger>( x => new SpUseCaseLogger(settings.ConnString));
             services.AddTransient<IExceptionLogger, ConsoleExceptionLogger>();

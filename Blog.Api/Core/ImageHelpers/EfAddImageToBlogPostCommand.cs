@@ -56,17 +56,17 @@ namespace Blog.Api.Core.ImageHelpers
 
                 using (var stream = new FileStream(putanja, FileMode.Create))
                 { x.Image.CopyTo(stream); }
-                var image = new Image
-                {
-                    Src = putanja,
-                    Alt = imgAlt
-                };
-                Context.Images.Add(image);
-                Context.SaveChanges();
-                var imageId = Context.Images.FirstOrDefault(y => y.Src == putanja);
-                var blogPostImage = new BlogPostImage { ImageId = imageId.Id, PostId = x.BlogPostId };
-                Context.BlogPostImages.Add(blogPostImage);
-                Context.SaveChanges();
+                //var image = new Image
+                //{
+                //    Src = putanja,
+                //    Alt = imgAlt
+                //};
+                //Context.Images.Add(image);
+                //Context.SaveChanges();
+                //var imageId = Context.Images.FirstOrDefault(y => y.Src == putanja);
+                //var blogPostImage = new BlogPostImage { ImageId = imageId.Id, PostId = x.BlogPostId };
+                //Context.BlogPostImages.Add(blogPostImage);
+                //Context.SaveChanges();
             }
                 }
             }

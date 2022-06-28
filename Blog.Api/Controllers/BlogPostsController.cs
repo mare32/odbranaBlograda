@@ -5,10 +5,12 @@ using Blog.Application.UseCases.Commands;
 using Blog.Application.UseCases.DTO;
 using Blog.Application.UseCases.DTO.Base;
 using Blog.Application.UseCases.Queries;
+using Blog.DataAccess;
 using Blog.Domain;
 using Blog.Implementation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,9 +27,11 @@ namespace Blog.Api.Controllers
     {
         private UseCaseHandler _handler;
         private IApplicationUser _user;
+        private BlogContext _context;
         //public static IEnumerable<string> AllowedExtensions => new List<string> { ".jpg",".png",".jpeg",".gif" };
-        public BlogPostsController(UseCaseHandler handler, IApplicationUser user)
+        public BlogPostsController(UseCaseHandler handler, IApplicationUser user, BlogContext context)
         {
+            _context = context;
             _handler = handler;
             _user = user;
         }
@@ -135,6 +139,7 @@ namespace Blog.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="command"></param>
+        /// <param name="deleter"></param>
         /// <returns>HttpResponseMessage</returns>
         /// <remarks>
         /// Sample request:
@@ -152,9 +157,14 @@ namespace Blog.Api.Controllers
         [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult Delete(int id, [FromServices]IDeleteBlogPostCommand command)
+        public IActionResult Delete(int id, [FromServices]IDeleteBlogPostCommand command, 
+                                            [FromServices] IFileDeleter deleter)
         {
-            // ovde, u blogPostImages obrisati sve sa PostId-jem koji je gore prosledjen, al pitanje je, sta prvo obrisati, slike ili objavu
+            var blogPostImages = _context.BlogPostImages.Include(x => x.Image).Where(x => x.PostId == id).ToList();
+            foreach(var img in blogPostImages)
+            {
+                deleter.DeleteFile(img.Image.Src);
+            }
             _handler.HandleCommand(command, id);
             return NoContent();
         }
