@@ -61,7 +61,7 @@ namespace Blog.Implementation.UseCases.Queries.Ef
             {
                 search.Page = 1;
             }
-
+            //var coverImage = 
             var toSkip = (search.Page.Value - 1) * search.PerPage.Value;
 
             var response = new PagedResponse<BlogPostDto>();
@@ -89,6 +89,12 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 Status = x.Status.Name,
                 Health = x.Health,
                 Shield = x.Shield,
+                Image = new CoverImageDto
+                {
+                    Id = Context.Images.FirstOrDefault(i => x.CoverImage == i.Id).Id,
+                    src = Context.Images.FirstOrDefault(i => x.CoverImage == i.Id).Src,
+                    alt = Context.Images.FirstOrDefault(i => x.CoverImage == i.Id).Alt
+                },
                 CreatedAt = x.CreatedAt,
                 StatusUpdatedAt = x.StatusUpdatedAt,
                 TotalVotes = x.Votes.Count,

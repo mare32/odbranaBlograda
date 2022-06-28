@@ -1,4 +1,6 @@
-﻿using Blog.Api.Core.DTO;
+﻿using Blog.Api.Core;
+using Blog.Api.Core.DTO;
+using Blog.Application;
 using Blog.Application.UseCases.Commands;
 using Blog.Application.UseCases.DTO;
 using Blog.Application.UseCases.DTO.Base;
@@ -23,7 +25,7 @@ namespace Blog.Api.Controllers
     {
         private UseCaseHandler _handler;
         private IApplicationUser _user;
-        public static IEnumerable<string> AllowedExtensions => new List<string> { ".jpg",".png",".jpeg",".gif" };
+        //public static IEnumerable<string> AllowedExtensions => new List<string> { ".jpg",".png",".jpeg",".gif" };
         public BlogPostsController(UseCaseHandler handler, IApplicationUser user)
         {
             _handler = handler;
@@ -80,6 +82,7 @@ namespace Blog.Api.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <param name="command"></param>
+        /// <param name="uploader"></param>
         /// <returns>HttpResponseMessage</returns>
         /// <remarks>
         /// Sample request:
@@ -103,39 +106,26 @@ namespace Blog.Api.Controllers
         [ProducesResponseType(401)]
         [ProducesResponseType(422)]
         [ProducesResponseType(500)]
-        public IActionResult Post([FromForm]CreateBlogPostWithImageDto dto,[FromServices]ICreateBlogPostCommand command)
+        public IActionResult Post([FromForm]CreateBlogPostWithImageDto dto,
+                                  [FromServices]ICreateBlogPostCommand command, 
+                                  [FromServices]IFileUploader uploader)
         {
-
-            // Apstrakovati sve ovo, mozda dodati u helpers
-            var imgAlt = "";
-            var guid = Guid.NewGuid().ToString();
-            var extension = Path.GetExtension(dto.Image.FileName); 
-            if(!AllowedExtensions.Contains(extension))
-            {
-                throw new InvalidOperationException("Los tip slike.");
-            }
-            if(dto.CategoryIds == null || dto.CategoryIds.Count() < 1 )
+            if (dto.CategoryIds == null || dto.CategoryIds.Count() < 1)
             {
                 return UnprocessableEntity(new { error = "Izaberite makar jednu kategoriju." });
             }
-            imgAlt = string.IsNullOrEmpty(dto.ImageAlt) ? "Slika nije ucitana" : dto.ImageAlt;
-
-            var imeSlike = guid + extension;
-            var putanja = Path.Combine("wwwroot", "images", imeSlike);
-            
+            //uploader.File = dto.Image;
+            var filename = uploader.Upload(FileLocations.Images, dto.Image);
             CreateBlogPostDto noviDto = new CreateBlogPostDto
             {
                 Title = dto.Title,
                 BlogPostContent = dto.BlogPostContent,
                 AuthorId = _user.Id,
                 CategoryIds = dto.CategoryIds,
-                ImageAlt = imgAlt,
-                ImageSrc = putanja
+                ImageAlt = filename,
+                ImageSrc = filename
             };
             _handler.HandleCommand(command, noviDto);
-
-            using(var stream = new FileStream(putanja, FileMode.Create))
-            { dto.Image.CopyTo(stream); }
 
             return StatusCode(201);
         }
@@ -164,6 +154,7 @@ namespace Blog.Api.Controllers
         [ProducesResponseType(500)]
         public IActionResult Delete(int id, [FromServices]IDeleteBlogPostCommand command)
         {
+            // ovde, u blogPostImages obrisati sve sa PostId-jem koji je gore prosledjen, al pitanje je, sta prvo obrisati, slike ili objavu
             _handler.HandleCommand(command, id);
             return NoContent();
         }

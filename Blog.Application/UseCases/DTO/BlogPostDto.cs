@@ -15,6 +15,7 @@ namespace Blog.Application.UseCases.DTO
         public IEnumerable<CategoryDto> Categories { get; set; }
         public IEnumerable<int> BlogPostImageIds { get; set; }
         public int CoverImageId { get; set; }
+        public CoverImageDto Image { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public int VoteScore { get; set; }
@@ -24,5 +25,10 @@ namespace Blog.Application.UseCases.DTO
         public int Shield { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? StatusUpdatedAt { get; set; }
+    }
+    public class CoverImageDto : BaseDto
+    {
+        public string src { get; set; }
+        public string alt { get; set; }
     }
 }

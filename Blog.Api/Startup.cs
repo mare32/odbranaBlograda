@@ -1,5 +1,6 @@
 using Blog.Api.Core;
 using Blog.Api.Extensions;
+using Blog.Application;
 using Blog.Application.Emails;
 using Blog.Application.Logging;
 using Blog.Application.UseCases;
@@ -46,6 +47,7 @@ namespace Blog.Api
             services.AddJwt(settings);
             services.AddBlogContext();
             services.AddUseCases();
+            services.AddTransient<IFileUploader, S3FileUploader>();
             services.AddCors();
             services.AddTransient<IUseCaseLogger>( x => new SpUseCaseLogger(settings.ConnString));
             services.AddTransient<IExceptionLogger, ConsoleExceptionLogger>();

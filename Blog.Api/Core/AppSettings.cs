@@ -5,6 +5,7 @@
         public string ConnString { get; set; }
         public JwtSettings JwtSettings { get; set; }
         public EmailOptions EmailOptions { get; set; }
+        public string FilesDomain { get; set; }
     }
     public class EmailOptions
     {

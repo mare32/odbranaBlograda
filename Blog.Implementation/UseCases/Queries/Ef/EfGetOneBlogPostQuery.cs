@@ -53,6 +53,12 @@ namespace Blog.Implementation.UseCases.Queries.Ef
                 Status = blogPost.Status.Name,
                 Health = blogPost.Health,
                 Shield = blogPost.Shield,
+                Image = new CoverImageDto
+                {
+                    Id = Context.Images.FirstOrDefault(i => blogPost.CoverImage == i.Id).Id,
+                    src = "https://blograd-images.s3.eu-central-1.amazonaws.com/" + Context.Images.FirstOrDefault(i => blogPost.CoverImage == i.Id).Src,
+                    alt = Context.Images.FirstOrDefault(i => blogPost.CoverImage == i.Id).Alt
+                },
                 CreatedAt = blogPost.CreatedAt,
                 StatusUpdatedAt = blogPost.StatusUpdatedAt,
                 TotalVotes = blogPost.Votes.Count,
