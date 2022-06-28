@@ -24,7 +24,7 @@ namespace Blog.Api.Core
 					ContentType = file.ContentType
 				};
 				// ovi dole kljucevi treba iz json config fajla da se procitaju
-				var s3Client = new AmazonS3Client("AKIAXGIWQIW32VOCO2WA", "qdoG1V1/fHrAxf6FT6T1qQcC2pWqRY+cM7PeYud8", RegionEndpoint.GetBySystemName("eu-central-1"));
+				var s3Client = new AmazonS3Client("", "", RegionEndpoint.GetBySystemName("eu-central-1"));
 				var fileTransferUtility = new TransferUtility(s3Client);
 
 				fileTransferUtility.UploadAsync(uploadRequest).GetAwaiter().GetResult();
